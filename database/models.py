@@ -22,18 +22,17 @@ class Product(Base,DateMixin ):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     category_id = Column(Integer, ForeignKey("category.id"))
-    variant = relationship('Variant', back_populates='product')
+    variant = relationship('Variant', back_populates='product',cascade="all, delete",passive_deletes=True,)
     category = relationship('Category',  back_populates='product')
 
 
-class Variant(Base):
+class Variant(Base,DateMixin):
     __tablename__ = 'variant'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     length = Column(String)
     diameter = Column(Float)
     strength = Column(String)
-    cigar_type = Column(String)
     packaging_type = Column(Integer)
     price = Column(Float)
     available = Column(Boolean)
