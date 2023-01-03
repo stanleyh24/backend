@@ -10,8 +10,9 @@ class CategoryBase(BaseModel):
         orm_mode= True
 
 class CategoryDisplay(BaseModel):
-    id: int
+    id: str
     name : str
+    slug : str
     created_At: datetime
     updated_At: datetime | None
 
@@ -21,15 +22,18 @@ class CategoryDisplay(BaseModel):
 
 class ProductBase(BaseModel):
     name: str
-    category_id: int
+    category_id: str
+    image_url:str
 
     class Config():
         orm_mode= True
 
 class ProductDisplay(BaseModel):
-    id: int
+    id: str
     name: str
-    category_id: int
+    slug : str
+    image_url:str
+    category_id: str
 
     class Config():
         orm_mode= True
@@ -48,16 +52,43 @@ class VariantBase(BaseModel):
         orm_mode= True
 
 class VariantDisplay(BaseModel):
-    id: int
+    id: str
     name: str
+    slug : str
     length: str
     diameter: float
     strength: str
     packaging_type: int
     price:float
-    product_id: int
+    product_id: str
     available: bool
 
+
+    class Config():
+        orm_mode= True
+
+class OrderDetail(BaseModel):
+    variant_id: str
+    price:float
+    quantity: int
+
+class OrderBase(BaseModel):
+    first_name:str
+    last_name:str
+    email:str
+    phone:str
+    address:str
+    postal_code :str
+    city:str
+    products:List[OrderDetail]
+    amount:float
+
+    class Config():
+        orm_mode= True
+
+class OrderResponse(BaseModel):
+    id: str
+    amount:float
 
     class Config():
         orm_mode= True

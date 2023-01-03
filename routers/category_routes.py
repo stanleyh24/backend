@@ -18,7 +18,7 @@ def get_all_category(db:Session= Depends(get_db)):
     return db_category.get_all(db)
 
 @category.get('/{category_id}', response_model=CategoryDisplay)
-def get_a_category(category_id : int,db:Session= Depends(get_db) ):
+def get_a_category(category_id : str,db:Session= Depends(get_db) ):
     return db_category.get_one(db, category_id)
 
 
@@ -27,9 +27,9 @@ def create_category(request: CategoryBase, db:Session= Depends(get_db)):
     return db_category.create(db,request)
 
 @category.put('/{category_id}', response_model=CategoryDisplay)
-def update_category(category_id : int, request: CategoryBase, db:Session=Depends(get_db)):
+def update_category(category_id : str, request: CategoryBase, db:Session=Depends(get_db)):
     return db_category.update(db, category_id, request)
 
 @category.delete('/{category_id}')
-def delete_category(category_id : int, db:Session=Depends(get_db)):
+def delete_category(category_id : str, db:Session=Depends(get_db)):
     return db_category.delete(db, category_id)

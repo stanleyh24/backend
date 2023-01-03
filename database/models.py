@@ -4,37 +4,68 @@ from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.orm import relationship
 
 
+
 class DateMixin():
-    created_At = Column(DateTime)
+    created_At = Column(DateTime,nullable=False)
     updated_At = Column(DateTime)
     
 
 
 class Category(Base, DateMixin):
     __tablename__ = 'category'
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
+    id = Column(String, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    slug= Column(String(100), nullable=False)
     product = relationship('Product', back_populates='category')
 
 
 class Product(Base,DateMixin ):
     __tablename__ = 'product'
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    category_id = Column(Integer, ForeignKey("category.id"))
-    variant = relationship('Variant', back_populates='product',cascade="all, delete",passive_deletes=True,)
+    id = Column(String, primary_key=True, index=True)
+    name = Column(String,nullable=False)
+    image_url= Column(String, nullable=False)
+    slug= Column(String(100), nullable=False)
+    category_id = Column(Integer, ForeignKey("category.id"),nullable=False)
+    variant = relationship('Variant', back_populates='product',cascade="all, delete",passive_deletes=True)
     category = relationship('Category',  back_populates='product')
 
 
 class Variant(Base,DateMixin):
     __tablename__ = 'variant'
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    length = Column(String)
-    diameter = Column(Float)
-    strength = Column(String)
-    packaging_type = Column(Integer)
-    price = Column(Float)
+    id = Column(String, primary_key=True, index=True)
+    name = Column(String,nullable=False)
+    slug= Column(String(100), nullable=False)
+    length = Column(String,nullable=False)
+    diameter = Column(Float,nullable=False)
+    strength = Column(String,nullable=False)
+    packaging_type = Column(Integer,nullable=False)
+    price = Column(Float,nullable=False)
     available = Column(Boolean)
-    product_id = Column(Integer, ForeignKey("product.id"))
+    product_id = Column(Integer, ForeignKey("product.id"),nullable=False)
     product = relationship('Product', back_populates='variant')
+
+
+class Order(Base,DateMixin):
+    __tablename__ = 'order'
+    id = Column(String, primary_key=True, index=True)
+    first_name = Column(String,nullable=False)
+    last_name = Column(String,nullable=False)
+    email = Column(String,nullable=False)
+    phone = Column(String,nullable=False)
+    address = Column(String,nullable=False)
+    postal_code = Column(String,nullable=False)
+    city = Column(String,nullable=False)
+    amount=Column(Float,nullable=False)
+    paid = Column(Boolean,default=False)
+
+    items = relationship('OrderDetail', back_populates="order", cascade="all, delete",passive_deletes=True)
+
+class OrderDetail(Base,DateMixin):
+    __tablename__ = 'order_datail'
+    id = Column(String, primary_key=True, index=True)
+    order_id = Column(Integer, ForeignKey("order.id"),nullable=False)
+    product_id = Column(Integer, ForeignKey("product.id"),nullable=False)
+    price = Column(Float,nullable=False)
+    quantity = Column(Integer,default=1)
+
+    order = relationship("Order", back_populates="items")

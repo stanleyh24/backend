@@ -1,14 +1,18 @@
 from routers.schemas import ProductBase, VariantBase
 from sqlalchemy.orm.session import Session
-from database.models import Product, Variant
+from database.models import Product, Variant, Category
 from datetime import datetime
 from fastapi import HTTPException, status
-
+import uuid
+from utils.utils import slugify
 
 
 def create_product(db:Session, request:ProductBase):
     new_product = Product(
+        id= str(uuid.uuid4()),
         name= request.name,
+        slug = slugify(request.name),
+        image_url= request.image_url,
         category_id= request.category_id,
         created_At= datetime.now()
     )
@@ -17,22 +21,33 @@ def create_product(db:Session, request:ProductBase):
     db.refresh(new_product)
     return  new_product
 
-def get_all_product(db:Session):
-    return db.query(Product).all()
+def get_all_product(category: str, db:Session):
+    if category is None :
+        return db.query(Product).all()
+    
+    c = db.query(Category).filter(Category.slug == category).first()
+    return db.query(Product).filter(Product.category_id == c.id).all()
 
 
-def get_one_product(db:Session, product_id: int):
+def get_one_product(db:Session, product_id: str ):
     if product := db.query(Product).filter(Product.id == product_id).first():
         return product
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Product with id {product_id} not found")
 
+def get_by_category(db: Session, category_slug:str):
+    category = db.query(Category).filter(Category.slug == category_slug).first()
+    print(category)
+    if products := db.query(Product).filter(Product.category_id == category.id):
+        return products
 
-def update_product(db:Session, product_id: int, request:ProductBase):
+
+def update_product(db:Session, product_id: str, request:ProductBase):
 
     if not (product := db.query(Product).filter(Product.id == product_id).first()):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Product with id {product_id} not found")
     product.name= request.name
+    slug = slugify(request.name)
     product.category_id= request.category_id
     product.updated_At= datetime.now()
     db.commit()
@@ -40,7 +55,7 @@ def update_product(db:Session, product_id: int, request:ProductBase):
     return product
 
 
-def delete_product(db:Session, product_id: int):
+def delete_product(db:Session, product_id: str):
     if not (product := db.query(Product).filter(Product.id == product_id).first()):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, details=f"Product with id {product_id} not found")
     db.delete(product)
@@ -50,9 +65,11 @@ def delete_product(db:Session, product_id: int):
 
 ############ Variant ############
 
-def create_variant(db:Session, product_id:int,request:VariantBase):
+def create_variant(db:Session, product_id:str,request:VariantBase):
     new_variant = Variant(
+        id= str(uuid.uuid4()),
         name= request.name,
+        slug = slugify(request.name),
         length = request.length,
         diameter = request.diameter,
         strength = request.strength,
@@ -67,22 +84,23 @@ def create_variant(db:Session, product_id:int,request:VariantBase):
     db.refresh(new_variant)
     return  new_variant
 
-def get_all_variant(db:Session, product_id: int):
+def get_all_variant(db:Session, product_id: str):
     return db.query(Variant).filter(Variant.product_id == product_id).all()
 
 
-def get_one_variant(db:Session,product_id: int, variant_id: int):
+def get_one_variant(db:Session,product_id: str, variant_id: str):
     if variant := db.query(Variant).filter(Variant.product_id == product_id).filter(Variant.id == variant_id).first():
         return variant
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,details=f"Variant with id {variant_id} not found")
 
 
-def update_variant(db:Session, product_id: int, variant_id: int, request:VariantBase):
+def update_variant(db:Session, product_id: str, variant_id: str, request:VariantBase):
 
     if not (variant := db.query(Variant).filter(Variant.product_id == product_id).filter(Variant.id == variant_id).first()):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, details=f"variant with id {variant_id} not found")
     variant.name= request.name
+    slug = slugify(request.name)
     variant.length = request.length
     variant.diameter = request.diameter
     variant.strength = request.strength
@@ -96,7 +114,7 @@ def update_variant(db:Session, product_id: int, variant_id: int, request:Variant
     return variant
 
 
-def delete_variant(db:Session,product_id: int, variant_id: int):
+def delete_variant(db:Session,product_id: str, variant_id: str):
     if not (variant := db.query(Variant).filter(Variant.product_id == product_id).filter(Variant.id == variant_id).first()):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, details=f"Variant with id {variant_id} not found")
     db.delete(variant)
