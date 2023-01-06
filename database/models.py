@@ -1,5 +1,5 @@
 from .database import Base
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float, Text
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -9,7 +9,16 @@ class DateMixin():
     created_At = Column(DateTime,nullable=False)
     updated_At = Column(DateTime)
     
-
+class User(Base, DateMixin):
+    __tablename__ = 'user'
+    id = Column(String, primary_key=True, index=True)
+    username = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    email = Column(String(80),nullable=False)
+    password=Column(Text,nullable=True)
+    is_staff=Column(Boolean,default=False)
+    is_active=Column(Boolean,default=False)
 
 class Category(Base, DateMixin):
     __tablename__ = 'category'

@@ -1,4 +1,4 @@
-from jwt import encode, decode
+""" #from jwt import encode, decode
 from jwt import exceptions
 from datetime import datetime, timedelta
 from os import getenv
@@ -22,4 +22,4 @@ def validate_token(token, output=False):
     except exceptions.DecodeError:
         return JSONResponse(content={"message": "Invalid Token"}, status_code=401)
     except exceptions.ExpiredSignatureError:
-        return JSONResponse(content={"message": "Token Expired"}, status_code=401)
+        return JSONResponse(content={"message": "Token Expired"}, status_code=401) """
