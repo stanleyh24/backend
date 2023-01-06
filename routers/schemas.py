@@ -1,7 +1,22 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import List
+
+
+class User(BaseModel):
+    username = str
+    email = EmailStr
+
+    class Config():
+        orm_mode= True
+
+class UserBase(BaseModel):
+    username : str
+    email : EmailStr
+        
+    class Config():
+        orm_mode= True
 
 class CategoryBase(BaseModel):
     name : str

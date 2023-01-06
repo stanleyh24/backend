@@ -3,7 +3,8 @@ from fastapi.staticfiles import StaticFiles
 from database import models
 from database.database  import engine
 from fastapi.middleware.cors import CORSMiddleware
-from routers import category_routes, product_routes, order_routes,payment_routes
+from routers import category_routes, product_routes, order_routes,payment_routes, auth
+from dotenv import load_dotenv
 
 
 
@@ -12,7 +13,7 @@ app= FastAPI(title="Caoba Cigars API")
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
+app.include_router(auth.auth_routes)
 app.include_router(category_routes.category)
 app.include_router(product_routes.product)
 app.include_router(order_routes.order)
@@ -34,3 +35,5 @@ app.add_middleware(
 )
 
 app.mount('/images', StaticFiles(directory='images'),name='images')
+
+load_dotenv()

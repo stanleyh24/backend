@@ -23,6 +23,7 @@ class Product(Base,DateMixin ):
     __tablename__ = 'product'
     id = Column(String, primary_key=True, index=True)
     name = Column(String,nullable=False)
+    description = Column(String(), nullable=False)
     image_url= Column(String, nullable=False)
     slug= Column(String(100), nullable=False)
     category_id = Column(Integer, ForeignKey("category.id"),nullable=False)
