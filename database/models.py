@@ -32,7 +32,7 @@ class Product(Base,DateMixin ):
     __tablename__ = 'product'
     id = Column(String, primary_key=True, index=True)
     name = Column(String,nullable=False)
-    description = Column(String(), nullable=False)
+    description = Column(Text, nullable=False)
     image_url= Column(String, nullable=False)
     slug= Column(String(100), nullable=False)
     category_id = Column(Integer, ForeignKey("category.id"),nullable=False)
@@ -52,6 +52,7 @@ class Variant(Base,DateMixin):
     price = Column(Float,nullable=False)
     available = Column(Boolean)
     product_id = Column(Integer, ForeignKey("product.id"),nullable=False)
+    
     product = relationship('Product', back_populates='variant')
 
 
@@ -73,8 +74,8 @@ class Order(Base,DateMixin):
 class OrderDetail(Base,DateMixin):
     __tablename__ = 'order_datail'
     id = Column(String, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey("order.id"),nullable=False)
-    product_id = Column(Integer, ForeignKey("product.id"),nullable=False)
+    order_id = Column(String, ForeignKey("order.id"),nullable=False)
+    variant_id = Column(String, ForeignKey("variant.id"),nullable=False)
     price = Column(Float,nullable=False)
     quantity = Column(Integer,default=1)
 

@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Request,status, BackgroundTasks
-from utils.utils import confirm_payment
+from fastapi import APIRouter, Request, status, BackgroundTasks, Depends
+from sqlalchemy.orm import Session
+from utils.utils import confirm_payment, create_invoice
+from database.database import get_db
 
 payment = APIRouter(
     prefix='/payment',
@@ -12,6 +14,12 @@ async def get_payment(request:Request, background_tasks: BackgroundTasks):
     headers=request.headers
     body= await request.json()
     background_tasks.add_task(confirm_payment, headers=headers, body=body)
+    return {"message":"ok"}
+
+
+@payment.get('/invoice', status_code=status.HTTP_200_OK)
+async def get_payment(background_tasks: BackgroundTasks):
+    background_tasks.add_task(create_invoice,order_id="bdedd2c7-e29a-4328-8a96-19745d16661a")
     return {"message":"ok"}
 
 

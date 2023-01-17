@@ -24,8 +24,9 @@ def create_order(db:Session, request:OrderBase):
 
     for product in request.products:
         order_detail = OrderDetail(
+            id= str(uuid.uuid4()),
             order_id= new_order.id,
-            product_id= product.variant_id, 
+            variant_id= product.variant_id, 
             price = product.price,
             quantity= product.quantity,
             created_At= datetime.now()

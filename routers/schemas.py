@@ -58,6 +58,7 @@ class CategoryDisplay(BaseModel):
 
 class ProductBase(BaseModel):
     name: str
+    description: str
     category_id: str
     image_url:str
 
@@ -67,6 +68,7 @@ class ProductBase(BaseModel):
 class ProductDisplay(BaseModel):
     id: str
     name: str
+    description: str
     slug : str
     image_url:str
     category_id: str

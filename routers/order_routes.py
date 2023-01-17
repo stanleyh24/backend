@@ -12,7 +12,7 @@ order = APIRouter(
     tags=['Orders']
 )
 
-@order.post('/', response_model=OrderResponse)
+@order.post('/', response_model=OrderResponse, status_code=status.HTTP_201_CREATED)
 def create_order(request: OrderBase, db:Session= Depends(get_db)):
     return db_order.create_order(db, request)
 

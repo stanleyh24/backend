@@ -11,6 +11,7 @@ def create_product(db:Session, request:ProductBase):
     new_product = Product(
         id= str(uuid.uuid4()),
         name= request.name,
+        description= request.description,
         slug = slugify(request.name),
         image_url= request.image_url,
         category_id= request.category_id,

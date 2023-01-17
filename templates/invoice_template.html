@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- <link href="style.css" rel="stylesheet" type="text/css"> -->
+    <style>
+        html {
+    font-family: 'helvetica neue', helvetica, arial, sans-serif;
+  }
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  
+main {
+    width:100%;
+   
+}
+header {
+    text-transform: uppercase;
+    color: #efb810;
+}
+
+.flex {
+    display: flex;
+}
+.grow {
+    flex-grow: 1;
+}
+
+.text-xl {
+    font-size: 42px;
+}
+.ml-1 {
+    margin-left: 4px;
+}
+.ml-2 {
+    margin-left: 20px;
+}
+
+.mb{
+    margin-bottom: 50px;
+}
+.col {
+    flex-direction: column;
+}
+thead th, tfoot th {
+    font-family:  cursive;
+  }
+  
+  th {
+    letter-spacing: 2px;
+  }
+  
+  td {
+    letter-spacing: 1px;
+  }
+  
+  tbody td {
+    text-align: center;
+  }
+  
+  tfoot th {
+    text-align: right;
+  }
+
+  tfoot td {
+    text-align: center;
+  }
+  
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table thead tr th{
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+thead th:nth-child(1) {
+    width: 50%;
+}
+
+thead th:nth-child(2) {
+    width: 10%;
+  }
+  
+  thead th:nth-child(3) {
+    width: 20%;
+  }
+  
+  thead th:nth-child(4) {
+    width: 20%;
+  }
+  
+  th, td {
+    padding: 15px;
+  }
+
+
+</style>
+    
+</head>
+<body>
+    <main>
+        <header id="header" >
+            <h1 class="text-xl ml-2">Caoba Cigars</h1>
+        </header>
+        <div class="flex col ml-2 mb">
+                <p>RNC: 101-88241-7</p>
+                <p>C/El Conde #101,Local #9 Centro comercial Colon</p>
+                <p>Santo Domingo,R.D.</p>
+                <p>Telefono: (809) 685-6425</p>
+                <p>Email: ventas@caobacigars.com</p>
+        </div>
+        <h2 style="color: #efb810; margin-bottom: 10px;" class="text-xl ml-2">Enviado a:</h2>
+    <div class="flex ml-2 mb">
+        <div class="flex col grow">
+            <p>{{order.first_name}} {{order.last_name}}</p>
+            <p>{{order.address}},{{order.city}}</p>
+            <p>{{order.phone}}</p>
+            <p>{{order.email}}</p>
+            
+        </div>
+            <div class="flex col grow">
+                <div class="flex">
+                    <p>Factura #:</p>
+                    <p class="ml-1">0001</p>
+                </div>
+                <div class="flex grow">  
+                    <p>Fecha :</p>
+                    <p class="ml-1">{{date}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <table class="mb">
+            <thead>
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Cant.</th>
+                    <th>Precio Unit.</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_datails %}
+                    <tr>
+                        <td>Caoba Oro, Robusto 12/1 </td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.price * item.quantity}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="3">Total Factura</th>
+                    <td>US${{order.amount}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    
+    
+    <h2 style="color: #efb810; text-align: center;">Gracias por su compra!</h2>
+</main>
+    
+</body>
+</html>
