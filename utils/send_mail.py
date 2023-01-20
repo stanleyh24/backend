@@ -48,6 +48,7 @@ class Mail:
             
             
             file_path = './invoices/invoice_asd.pdf'
+            Path(file_path).exists()
             mimeBase = MIMEBase("application", "octet-stream")
             with open(file_path, "rb") as file:
                 mimeBase.set_payload(file.read())
@@ -59,3 +60,47 @@ class Mail:
 
         server.quit()
         print("Email sent successfully")
+
+    def send2(self,email):
+        mail = MIMEMultipart('alternative')
+        mail['Subject'] = 'Factura Caoba Cigars'
+        mail['From'] = self.sender_mail
+        mail['To'] = email
+
+        text_template = """
+            Caoba Cigars
+
+            Hi {0},
+            We are delighted announce that our website hits 10 Million views this month.
+            """
+
+        html_template = """
+            <h1>Caoba Cigars</h1>
+
+            <p>Hola {0},</p>
+            <p>Gracias por preferir los productos de <b>Caoba Cigars</b>.</p>
+            """
+
+        html_content = MIMEText(html_template.format(email.split("@")[0]), 'html')
+        #text_content = MIMEText(text_template.format(email.split("@")[0]), 'plain')
+
+        #mail.attach(text_content)
+        mail.attach(html_content)
+            
+            
+        file_path = './invoices/invoice_asd.pdf'
+        if (Path(file_path).exists()):
+            mimeBase = MIMEBase("application", "octet-stream")
+            with open(file_path, "rb") as file:
+                mimeBase.set_payload(file.read())
+            encoders.encode_base64(mimeBase)
+            mimeBase.add_header("Content-Disposition", f"attachment; filename={Path(file_path).name}")
+            mail.attach(mimeBase)
+
+        server = smtplib.SMTP(host=self.smtp_server_domain_name, port=self.port)
+        server.ehlo()
+        server.starttls()
+        server.login(self.sender_mail, self.password)
+        server.sendmail(self.sender_mail, email, mail.as_string())
+
+        server.quit()

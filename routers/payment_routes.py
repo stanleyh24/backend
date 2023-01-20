@@ -19,7 +19,7 @@ async def get_payment(request:Request, background_tasks: BackgroundTasks):
 
 @payment.get('/invoice', status_code=status.HTTP_200_OK)
 async def get_payment(background_tasks: BackgroundTasks):
-    background_tasks.add_task(create_invoice,order_id="bdedd2c7-e29a-4328-8a96-19745d16661a")
+    background_tasks.add_task(create_invoice,order_id="0334b6fd-0d4f-4c03-b25a-f079a9d7e1a2")
     return {"message":"ok"}
 
 

@@ -1,5 +1,5 @@
 import httpx
-from os import getenv
+from os import getenv, path
 import pdfkit
 import jinja2
 from datetime import datetime
@@ -29,7 +29,7 @@ def create_invoice(order_id:str):
     output_pdf = './invoices/invoice_asd.pdf'
     pdfkit.from_string(output_text, output_pdf, configuration=config)
     
-    #send_invoice([order.email,])
+    send_invoice(order.email)
 
 
 def confirm_payment(headers, body):
@@ -54,7 +54,7 @@ def confirm_payment(headers, body):
 def send_invoice(mails):
     time.sleep(10)
     mail = Mail()
-    mail.send(mails)
+    mail.send2(mails)
 
 
 def slugify(word):
