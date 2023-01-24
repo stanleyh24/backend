@@ -10,6 +10,7 @@ from database.models import User
 from database.database import get_db
 from database import db_user
 
+
 auth = APIRouter(
     prefix='/auth',
     tags=['auth']
@@ -18,7 +19,7 @@ auth = APIRouter(
 
 
 @auth.post('/login', status_code=200 )
-def login(user : LoginModel, Authorize:AuthJWT=Depends(), db:Session= Depends(get_db)):
+async def login(user : LoginModel, Authorize:AuthJWT=Depends(), db:Session= Depends(get_db)):
     db_user=db.query(User).filter(User.username==user.username).first()
     print(db_user)
     if db_user and check_password_hash(db_user.password, user.password):
@@ -36,7 +37,18 @@ def login(user : LoginModel, Authorize:AuthJWT=Depends(), db:Session= Depends(ge
         detail="Invalid Username Or Password"
     )
 
-@auth.post('/create_user', response_model=UserModel, status_code = status.HTTP_201_CREATED )
+@auth.post('/create_user', response_model=UserModel, status_code = status.HTTP_201_CREATED ) 
 def create_user(user : UserModel, db:Session= Depends(get_db)):
     return db_user.create_user(db, user)
 
+@auth.get('/refresh')
+async def refresh_token(Authorize:AuthJWT=Depends()):
+    try:
+        Authorize.jwt_refresh_token_required()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Please provide valid refresh token"
+        ) from e
+    current_user = Authorize.get_jwt_subject()
+    access_token = Authorize.create_access_token(subject=current_user)
+    return jsonable_encoder({"access":access_token})

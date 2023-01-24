@@ -26,7 +26,7 @@ def get_a_product(product_id : str, db:Session= Depends(get_db)):
     return db_product.get_one_product(db,product_id)
 
 
-@product.post('/', response_model=ProductDisplay)
+@product.post('/', response_model=ProductDisplay, status_code = status.HTTP_201_CREATED )
 def create_product(request: ProductBase,db:Session= Depends(get_db),):
     return db_product.create_product(db,request)
 
@@ -61,7 +61,7 @@ def get_all_variants(product_id:str,db:Session= Depends(get_db)):
 def get_a_variant(product_id:str ,variant_id : str, db:Session= Depends(get_db)):
     return db_product.get_one_variant(db, product_id,variant_id)
 
-@product.post('/{product_id}/variant',response_model=VariantDisplay)
+@product.post('/{product_id}/variant',response_model=VariantDisplay, status_code = status.HTTP_201_CREATED )
 def create_variant(product_id:str,request:VariantBase,db:Session= Depends(get_db)):
     return db_product.create_variant(db,product_id, request)
 

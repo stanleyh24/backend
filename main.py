@@ -3,22 +3,24 @@ from fastapi.staticfiles import StaticFiles
 from database import models
 from database.database  import engine
 from fastapi.middleware.cors import CORSMiddleware
-from routers import category_routes, product_routes, order_routes,payment_routes
+from routers import category_routes, product_routes, order_routes,payment_routes, auth_routes
 from dotenv import load_dotenv
 from routers.schemas import Settings
+from fastapi_jwt_auth import AuthJWT
 
 
 
 app=FastAPI(title="Caoba Cigars API")
 
-""" @AuthJWT.load_config
+@AuthJWT.load_config
 def get_config():
     return Settings()
- """
+ 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
+app.include_router(auth_routes.auth)
 app.include_router(category_routes.category)
 app.include_router(product_routes.product)
 app.include_router(order_routes.order)

@@ -7,9 +7,24 @@ from database.database import get_db
 from database.models import Order
 from .send_mail import Mail
 import time
+import random
+import string
+
+def create_invoice_name():
+    s = "invoice.pdf"
+    letters = string.ascii_letters
+    rand_str = ''.join(random.choice(letters) for _ in range(5))
+    new= f'_{rand_str}.'
+    filename = new.join(s.rsplit('.', 1))
+
+    return f'./invoices/{filename}'
 
 def create_invoice(order_id:str):
-    order= next(get_db()).query(Order).filter(Order.id==order_id).first()
+    db = next(get_db())
+    order= db.query(Order).filter(Order.id==order_id).first()
+    order.paid=True
+    order.updated_At= datetime.now()
+    db.commit()
     order_datails = order.items
     
     Fecha = datetime.now().strftime("%d-%m-%Y")
@@ -26,10 +41,10 @@ def create_invoice(order_id:str):
     template = template_env.get_template(html_template)
     output_text = template.render(context)
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
-    output_pdf = './invoices/invoice_asd.pdf'
+    output_pdf = create_invoice_name()
     pdfkit.from_string(output_text, output_pdf, configuration=config)
     
-    send_invoice(order.email)
+    send_invoice(order.email, order.first_name, output_pdf)
 
 
 def confirm_payment(headers, body):
@@ -46,15 +61,13 @@ def confirm_payment(headers, body):
         r = httpx.post(getenv("VALIDATION_URL"), json=data, auth=(getenv("CLIENT_ID"),getenv("SECRET_ID")))
         
         if r.status_code == 200:
-            print("Success")
-            print(body['resource']['custom_id'])
             create_invoice(body['resource']['custom_id'])
 
 
-def send_invoice(mails):
+def send_invoice(mail, name, invoice_path):
     time.sleep(10)
     mail = Mail()
-    mail.send2(mails)
+    mail.send(mail, name, invoice_path)
 
 
 def slugify(word):
