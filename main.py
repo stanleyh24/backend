@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from database import models
 from database.database  import engine
 from fastapi.middleware.cors import CORSMiddleware
-from routers import category_routes, product_routes, order_routes,payment_routes, auth_routes
+from routers import category_routes, product_routes, order_routes,payment_routes, auth_routes, shiping_routes
 from dotenv import load_dotenv
 from routers.schemas import Settings
 from fastapi_jwt_auth import AuthJWT
@@ -25,6 +25,8 @@ app.include_router(category_routes.category)
 app.include_router(product_routes.product)
 app.include_router(order_routes.order)
 app.include_router(payment_routes.payment)
+app.include_router(shiping_routes.shiping)
+
 
 models.Base.metadata.create_all(engine)
 

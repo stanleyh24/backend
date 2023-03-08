@@ -1,6 +1,14 @@
+from fastapi import APIRouter, Depends, status
 import httpx
 
-requestData = {
+shiping = APIRouter(
+    prefix='/shiping',
+    tags=['shiping']
+)
+
+@shiping.get('/')
+async def get_shipings():
+    requestData = {
   "RateRequest": {
     "Request": {
       "SubVersion": "1703",
@@ -43,10 +51,6 @@ requestData = {
           "CountryCode": "DO"
         }
       },
-      "Service": {
-        "Code": "08",
-        "Description": "Worldwide Expedited"
-      },
       "ShipmentTotalWeight": {
         "UnitOfMeasurement": {
           "Code": "LBS",
@@ -77,7 +81,7 @@ requestData = {
     }
   }
 }
-r = httpx.post('https://wwwcie.ups.com/ship/v1/rating/Shop', headers={
+    r = httpx.post('https://wwwcie.ups.com/ship/v1/rating/Shop', headers={
     "Content-Type": "application/json",
     "AccessLicenseNumber": "FDCDA7F0602CCF72",
     "Username": "boutiquecaoba",
@@ -85,5 +89,5 @@ r = httpx.post('https://wwwcie.ups.com/ship/v1/rating/Shop', headers={
     "transactionSrc": "boutiquecaoba",
     "transId":"Tran123"
 }, json=requestData)
-body=r.json()
-print(body)
+    body=r.json()
+    return body
