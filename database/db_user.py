@@ -24,5 +24,3 @@ def create_user(db:Session, request:UserModel):
     return new_user
 
 
-def login(db:Session, user:LoginModel):
-    pass

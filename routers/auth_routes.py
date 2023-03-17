@@ -21,7 +21,6 @@ auth = APIRouter(
 @auth.post('/login', status_code=200 )
 async def login(user : LoginModel, Authorize:AuthJWT=Depends(), db:Session= Depends(get_db)):
     db_user=db.query(User).filter(User.username==user.username).first()
-    print(db_user)
     if db_user and check_password_hash(db_user.password, user.password):
         access_token=Authorize.create_access_token(subject=db_user.username)
         refresh_token=Authorize.create_refresh_token(subject=db_user.username)
@@ -41,7 +40,7 @@ async def login(user : LoginModel, Authorize:AuthJWT=Depends(), db:Session= Depe
 def create_user(user : UserModel, db:Session= Depends(get_db)):
     return db_user.create_user(db, user)
 
-@auth.get('/refresh')
+@auth.post('/refresh')
 async def refresh_token(Authorize:AuthJWT=Depends()):
     try:
         Authorize.jwt_refresh_token_required()

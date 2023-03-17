@@ -85,7 +85,9 @@ class VariantBase(BaseModel):
     packaging_type: int
     price:float
     available: bool
-
+    packaging_length:float
+    packaging_width:float
+    packaging_height:float
     class Config():
         orm_mode= True
 
@@ -100,6 +102,9 @@ class VariantDisplay(BaseModel):
     price:float
     product_id: str
     available: bool
+    packaging_length:float
+    packaging_width:float
+    packaging_height:float
 
 
     class Config():
@@ -128,5 +133,16 @@ class OrderResponse(BaseModel):
     id: str
     amount:float
 
+    class Config():
+        orm_mode= True
+
+
+class ShipTo(BaseModel):
+    Name: str
+    AddressLine: str
+    City: str
+    PostalCode: str
+    CountryCode: str
+    
     class Config():
         orm_mode= True

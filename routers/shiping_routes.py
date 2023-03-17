@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status
+from .schemas import ShipTo
 import httpx
 
 shiping = APIRouter(
@@ -6,8 +7,8 @@ shiping = APIRouter(
     tags=['shiping']
 )
 
-@shiping.get('/')
-async def get_shipings():
+@shiping.post('/')
+async def get_shipings(request:ShipTo):
     requestData = {
   "RateRequest": {
     "Request": {
@@ -32,13 +33,12 @@ async def get_shipings():
         }
       },
       "ShipTo": {
-        "Name": "Sarita Lynn",
+        "Name": request.Name,
         "Address": {
-          "AddressLine": "355 West San Fernando Street",
-          "City": "San Jose",
-          "StateProvinceCode": "CA",
-          "PostalCode": "95113",
-          "CountryCode": "US"
+          "AddressLine": request.AddressLine,
+          "City": request.City,
+          "PostalCode": request.PostalCode,
+          "CountryCode": request.CountryCode,
         }
       },
       "ShipFrom": {

@@ -16,9 +16,6 @@ app=FastAPI(title="Caoba Cigars API")
 def get_config():
     return Settings()
  
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
 app.include_router(auth_routes.auth)
 app.include_router(category_routes.category)
