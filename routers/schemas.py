@@ -120,11 +120,17 @@ class OrderBase(BaseModel):
     last_name:str
     email:str
     phone:str
+    country:str
     address:str
     postal_code :str
     city:str
     products:List[OrderDetail]
     amount:float
+    shipping_type: str
+    shipping_price:float
+    total_amount:float
+    
+
 
     class Config():
         orm_mode= True

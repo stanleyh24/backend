@@ -12,10 +12,14 @@ def create_order(db:Session, request:OrderBase):
         last_name = request.last_name,
         email = request.email,
         phone = request.phone,
+        country = request.country,
         address = request.address,
         postal_code = request.postal_code,
         city = request.city,
         amount=request.amount,
+        shipping_type = request.shipping_type,
+        shipping_price = request.shipping_price,
+        total_amount = request.total_amount,
         created_At= datetime.now()
     )
     db.add(new_order)
