@@ -7,7 +7,7 @@ from routers import category_routes, product_routes, order_routes,payment_routes
 from dotenv import load_dotenv
 from routers.schemas import Settings
 from fastapi_jwt_auth import AuthJWT
-
+import os
 
 
 app=FastAPI(title="Caoba Cigars API")
@@ -40,6 +40,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+if not os.path.isdir('./images'):
+    os.makedirs('./images')
+    
 app.mount('/images', StaticFiles(directory='images'),name='images')
 
 load_dotenv()
