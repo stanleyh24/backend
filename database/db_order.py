@@ -39,4 +39,8 @@ def create_order(db:Session, request:OrderBase):
     db.commit()
 
     return new_order
+
+
+def get_orders(db:Session):
+    return db.query(Order).all()
         

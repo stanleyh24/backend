@@ -62,6 +62,7 @@ class Variant(Base,DateMixin):
 class Order(Base,DateMixin):
     __tablename__ = 'order'
     id = Column(String, primary_key=True, index=True)
+    number = Column(Integer)
     first_name = Column(String,nullable=False)
     last_name = Column(String,nullable=False)
     email = Column(String,nullable=False)

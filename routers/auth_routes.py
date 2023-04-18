@@ -18,7 +18,7 @@ auth = APIRouter(
 
 
 
-@auth.post('/login', status_code=200 )
+@auth.post('/login', status_code=status.HTTP_200_OK )
 async def login(user : LoginModel, Authorize:AuthJWT=Depends(), db:Session= Depends(get_db)):
     db_user=db.query(User).filter(User.username==user.username).first()
     if db_user and check_password_hash(db_user.password, user.password):
