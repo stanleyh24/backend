@@ -8,6 +8,7 @@ import uuid
 def create_order(db:Session, request:OrderBase):
     new_order = Order(
         id= str(uuid.uuid4()),
+        number=1,
         first_name = request.first_name,
         last_name = request.last_name,
         email = request.email,

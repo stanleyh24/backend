@@ -45,7 +45,7 @@ def update_product(product_id : int, request: ProductBase, db:Session= Depends(g
 def delete_product(product_id : str, db:Session= Depends(get_db)):
     return db_product.delete_product(db, product_id)
 
-@product.post('/image')
+@product.post('/image', status_code = status.HTTP_201_CREATED)
 def upload_image(image: UploadFile = (...)):
     letters = string.ascii_letters
     rand_str = ''.join(random.choice(letters) for _ in range(6))

@@ -5,10 +5,12 @@ import jinja2
 from datetime import datetime
 from database.database import get_db
 from database.models import Order
-from .send_mail import Mail
+#from .send_mail import Mail
+from.mailer import Mail
 import time
 import random
 import string
+import subprocess
 
 def create_invoice_name():
     s = "invoice.pdf"
@@ -25,13 +27,13 @@ def create_invoice(order_id:str):
     order.paid=True
     order.updated_At= datetime.now()
     db.commit()
-    order_datails = order.items
+    order_details = order.items
     
     Fecha = datetime.now().strftime("%d-%m-%Y")
     
     context = {
         'order': order,
-        'order_datails': order_datails,
+        'order_details': order_details,
         'date' : Fecha
     }
 
@@ -65,9 +67,10 @@ def confirm_payment(headers, body):
 
 
 def send_invoice(mail, name, invoice_path):
-    time.sleep(10)
-    mail = Mail()
-    mail.send(mail, name, invoice_path)
+    #time.sleep(5)
+    """ mail = Mail()
+    mail.send(mail, name, '/home/scorpion/desa/pythonprojects/backend/invoices/invoice_jFSMZ.pdf') """
+    subprocess.run(["python3", "./utils/mailer.py", mail,name,invoice_path])
 
 
 def slugify(word):

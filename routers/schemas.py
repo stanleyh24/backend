@@ -115,6 +115,7 @@ class OrderDetail(BaseModel):
     price:float
     quantity: int
 
+
 class OrderBase(BaseModel):
     first_name:str
     last_name:str
@@ -155,7 +156,7 @@ class OrderDisplay(BaseModel):
 
 class OrderResponse(BaseModel):
     id: str
-    amount:float
+    total_amount:float
 
     class Config():
         orm_mode= True

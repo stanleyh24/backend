@@ -151,9 +151,9 @@ thead th:nth-child(2) {
                 </tr>
             </thead>
             <tbody>
-                {% for item in order_datails %}
+                {% for item in order_details %}
                     <tr>
-                        <td>Caoba Oro, Robusto 12/1 </td>
+                        <td>{{item.variant_id}} </td>
                         <td>{{item.quantity}}</td>
                         <td>{{item.price}}</td>
                         <td>{{item.price * item.quantity}}</td>
