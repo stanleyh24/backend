@@ -88,6 +88,8 @@ class VariantBase(BaseModel):
     packaging_length:float
     packaging_width:float
     packaging_height:float
+    weight: float
+    
     class Config():
         orm_mode= True
 
@@ -105,6 +107,7 @@ class VariantDisplay(BaseModel):
     packaging_length:float
     packaging_width:float
     packaging_height:float
+    weight: float
 
 
     class Config():
@@ -145,11 +148,12 @@ class OrderDisplay(BaseModel):
     address:str
     postal_code :str
     city:str
-    products:List[OrderDetail]
+    #products:List[OrderDetail]
     amount:float
     shipping_type: str
     shipping_price:float
     total_amount:float
+    paid:bool
     
     class Config():
         orm_mode= True
@@ -168,6 +172,10 @@ class ShipTo(BaseModel):
     City: str
     PostalCode: str
     CountryCode: str
+    Packaging_length:float
+    Packaging_width:float
+    Packaging_height:float
+    Weight: float
     
     class Config():
         orm_mode= True

@@ -53,6 +53,7 @@ class Variant(Base,DateMixin):
     packaging_length= Column(Float,nullable=False)
     packaging_width= Column(Float,nullable=False)
     packaging_height= Column(Float,nullable=False)
+    weight = Column(Float,nullable=False)
     available = Column(Boolean)
     product_id = Column(Integer, ForeignKey("product.id"),nullable=False)
     

@@ -56,7 +56,7 @@ async def get_shipings(request:ShipTo):
           "Code": "LBS",
           "Description": "Pounds"
         },
-        "Weight": "2"
+        "Weight": str(int(request.Weight))
       },
       "Package": {
         "PackagingType": {
@@ -67,15 +67,15 @@ async def get_shipings(request:ShipTo):
           "UnitOfMeasurement": {
             "Code": "IN"
           },
-          "Length": "10",
-          "Width": "7",
-          "Height": "5"
+          "Length": str(int(request.Packaging_length)),
+          "Width": str(int(request.Packaging_width)),
+          "Height": str(int(request.Packaging_height))
         },
         "PackageWeight": {
           "UnitOfMeasurement": {
             "Code": "LBS"
           },
-          "Weight": "2"
+          "Weight": str(int(request.Weight))
         }
       }
     }

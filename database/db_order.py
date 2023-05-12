@@ -1,8 +1,7 @@
 from routers.schemas import OrderBase
 from sqlalchemy.orm.session import Session
-from database.models import Order, OrderDetail
+from database.models import Order, OrderDetail,Variant, Product
 from datetime import datetime
-from fastapi import HTTPException, status
 import uuid
 
 def create_order(db:Session, request:OrderBase):
@@ -44,4 +43,20 @@ def create_order(db:Session, request:OrderBase):
 
 def get_orders(db:Session):
     return db.query(Order).all()
+
+def get_order_details(db:Session, order_id):
+    order_details=db.query(OrderDetail).filter(OrderDetail.order_id == order_id).all()
+    products=[]
+    
+    for item in order_details:
+        variant=db.query(Variant).filter(Variant.id == item.variant_id).first ()
+        p = {
+            'name': f"{variant.product.name} {variant.name} {variant.packaging_type}",
+            'quantity':item.quantity,
+            'price': item.price
+        }
+        products.append(p)
+    
+    return products
+    
         

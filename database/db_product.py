@@ -81,6 +81,7 @@ def create_variant(db:Session, product_id:str,request:VariantBase):
         packaging_length = request.packaging_length, 
         packaging_width = request.packaging_width, 
         packaging_height = request.packaging_height,
+        weight = request.weight,
         created_At= datetime.now()
     )
     db.add(new_variant)

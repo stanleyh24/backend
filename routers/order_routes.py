@@ -27,4 +27,14 @@ def get_order(db:Session= Depends(get_db),Authorize:AuthJWT=Depends()):
         ) from e
     return db_order.get_orders(db)
 
+@order.get('/{order_id}',status_code=status.HTTP_200_OK)
+def get_one_order(order_id: str, db:Session= Depends(get_db),Authorize:AuthJWT=Depends()):
+    try:
+        Authorize.jwt_required()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token"
+        ) from e
+    return db_order.get_order_details(db, order_id)
+
 
