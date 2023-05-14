@@ -113,7 +113,9 @@ def update_variant(db:Session, product_id: str, variant_id: str, request:Variant
     variant.price= request.price
     variant.product_id= product_id
     variant.available= request.available
+    variant.weight = request.weight
     variant.updated_At= datetime.now()
+    variant.weight = request.weight
     db.commit()
     db.refresh(variant)
     return variant

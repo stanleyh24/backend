@@ -28,8 +28,8 @@ app.include_router(shiping_routes.shiping)
 models.Base.metadata.create_all(engine)
 
 origins = [
-    "http://localhost",
-    "http://localhost:5173",
+    "*",
+    
 ]
 
 app.add_middleware(
