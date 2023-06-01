@@ -10,6 +10,7 @@ from.mailer import Mail
 import time
 import random
 import string
+import math
 import subprocess
 
 def create_invoice_name():
@@ -75,3 +76,10 @@ def send_invoice(mail, name, invoice_path):
 
 def slugify(word):
     return "-".join(word.split()).lower()
+
+
+def get_weight(peso):
+    if peso < 1 :
+        s = str(peso)
+        return s.translate(str.maketrans('','','.'))
+    return str(math.ceil(peso))

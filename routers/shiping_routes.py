@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from .schemas import ShipTo
 import httpx
+from utils.utils import get_weight
 
 shiping = APIRouter(
     prefix='/shiping',
@@ -75,7 +76,7 @@ async def get_shipings(request:ShipTo):
           "UnitOfMeasurement": {
             "Code": "LBS"
           },
-          "Weight": str(int(request.Weight))
+          "Weight": get_weight(request.Weight)
         }
       }
     }
