@@ -29,6 +29,9 @@ models.Base.metadata.create_all(engine)
 
 origins = [
     "*",
+    "http://caobacigars.com",
+    "https://caobacigars.com",
+
     
 ]
 
